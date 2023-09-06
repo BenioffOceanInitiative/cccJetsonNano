@@ -14,7 +14,10 @@ then run the start script:
 ```
 ./start.sh
 ```
-
+To attach to the tmux session and view the tracking output run:
+```
+tmux attach -t tracking
+```
 to change the weights, conf threshold or anything else edit the start.sh file
 
 the start script allows the program to run in the background, so that you can close your ssh session and have the program continue to run. To stop the program run the stop script:
