@@ -1,11 +1,13 @@
 # All The Nano Things
 after cloning cd into the repo and run the following commands:
-```chmod +x start.sh
+```
+chmod +x start.sh
 chmod +x stop.sh
 chmod +x install.sh
 ```
 then run the install script:
-```./install.sh
+```
+./install.sh
 ```
 then run the start script:
 ```
