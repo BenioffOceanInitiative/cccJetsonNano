@@ -11,7 +11,7 @@ then run the install script:
 ```
 then run the start script:
 ```
-./start_script.sh
+./start.sh
 ```
 
 to change the weights, conf threshold or anything else edit the start.sh file
