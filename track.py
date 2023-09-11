@@ -356,7 +356,7 @@ def get_top_id():
 
 def save_frame(img):
     global filename
-    filename = str(time.time()).replace('.','')
+    filename = str(round(time.time()) * 1000)
     image_save_dir = Path('inference/output')
     if not os.path.exists(image_save_dir):
         os.makedirs(image_save_dir)

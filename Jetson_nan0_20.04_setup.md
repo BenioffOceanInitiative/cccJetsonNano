@@ -26,22 +26,24 @@
 11.  Connect the Jetson Nano to the 5v 4A power supply via the barrel jack
 12. Follow the on-screen instructions to complete the initial setup
     The default username is jetson and the password is also jetson
+# Installing some utilities
 
-## Setting up secure ssh
+we're going to need v4l2-utils for the webcam, and tmux for running the program in the background
+
+```
+sudo apt install v4l2-utils
+sudo apt install tmux
+``` 
+
+## Options for setting up secure ssh
 We want to secure the Jetson Nano as much as possible, since this will be running 24/7 and will be exposed to the internet
 
 
 ### 1. **Secure the SSH Server**:
-Before exposing the SSH server to the Internet, take the following precautions:
+Before exposing the SSH server (Jetson Nano) to the Internet, take the following precautions:
 
 - **Change the default port**: (Not a foolproof measure, but can deter bots that scan default ports.)
     Edit `/etc/ssh/sshd_config` and change `Port 22` to a port of your choice, e.g., `Port 2222`.
-
-- **Disallow root login**:
-    In the same config file, ensure the following line exists and is uncommented:
-    ```
-    PermitRootLogin no
-    ```
 
 - **Use SSH keys for authentication**:
     - On your local computer (client side), generate an SSH key pair:
