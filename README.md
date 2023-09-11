@@ -41,7 +41,7 @@ Ctrl-b followed by p: Move to the previous window within the tmux session.
 
 Ctrl-b followed by &: Kill the current window (you'll be prompted to confirm).
 
-If you forget the session name, you can list all running tmux sessions with:
+If you forget the session name, or to check if the program is running, you can list all running tmux sessions with:
 
 ```
 tmux list-sessions
