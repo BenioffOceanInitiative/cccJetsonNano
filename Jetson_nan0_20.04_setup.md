@@ -26,3 +26,69 @@
 11.  Connect the Jetson Nano to the 5v 4A power supply via the barrel jack
 12. Follow the on-screen instructions to complete the initial setup
     The default username is jetson and the password is also jetson
+
+## Setting up secure ssh
+We want to secure the Jetson Nano as much as possible, since this will be running 24/7 and will be exposed to the internet
+
+
+### 1. **Secure the SSH Server**:
+Before exposing the SSH server to the Internet, take the following precautions:
+
+- **Change the default port**: (Not a foolproof measure, but can deter bots that scan default ports.)
+    Edit `/etc/ssh/sshd_config` and change `Port 22` to a port of your choice, e.g., `Port 2222`.
+
+- **Disallow root login**:
+    In the same config file, ensure the following line exists and is uncommented:
+    ```
+    PermitRootLogin no
+    ```
+
+- **Use SSH keys for authentication**:
+    - On your local computer (client side), generate an SSH key pair:
+        ```bash
+        ssh-keygen
+        ```
+    - Copy the public key to the remote computer:
+        ```bash
+        ssh-copy-id -i ~/.ssh/id_rsa.pub user@remote_host
+        ```
+    - After copying, edit `/etc/ssh/sshd_config` on the remote computer and disable password authentication:
+        ```
+        PasswordAuthentication no
+        ```
+
+- **Use a firewall**:
+    If you are using UFW (Uncomplicated Firewall), allow your custom SSH port:
+    ```bash
+    sudo ufw allow 2222/tcp
+    sudo ufw enable
+    ```
+
+- **Limit SSH access to specific IP addresses** (if possible):
+    With UFW, you can allow access to the SSH port only from a specific IP:
+    ```bash
+    sudo ufw allow from your.ip.address.here to any port 2222
+    ```
+
+- **Use `fail2ban`**:
+    This tool bans IP addresses that have too many failed login attempts:
+    ```bash
+    sudo apt install fail2ban
+    sudo systemctl enable fail2ban
+    sudo systemctl start fail2ban
+    ```
+
+### 2. **Port Forwarding**:
+To access your Linux machine from outside your local network, set up port forwarding on your router to forward your custom SSH port (e.g., 2222) to the Linux machine's internal IP address.
+
+### 3. **Dynamic DNS**:
+If your home network doesn't have a static IP, consider using a Dynamic DNS (DDNS) service like DuckDNS, No-IP, or DynDNS. This will provide a hostname that always points to your home's current IP address.
+
+### 4. **Connect**:
+Once everything is set up:
+
+```bash
+ssh -p 2222 user@remote_host_or_ddns
+```
+
+**Important**: Always be cautious when exposing any service to the public internet

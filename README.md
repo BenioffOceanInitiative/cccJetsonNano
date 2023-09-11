@@ -47,3 +47,9 @@ If you forget the session name, or to check if the program is running, you can l
 tmux list-sessions
 
 ```
+
+If using the gui on the jetson nano, you can test the webcam with mpv:
+``` 
+mpv /dev/video0
+```
+To exit mpv press q
