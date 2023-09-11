@@ -345,7 +345,9 @@ def get_top_id():
     global top_id
     global dir_data
     id = max(dir_data, key=dir_data.get)
-    
+    if dir_data[id] < (h//2)-20:
+        print("No object in the tracking area")
+        return
     
     top_id.append(id)
     top_id.append(dir_data[top_id[0]])
