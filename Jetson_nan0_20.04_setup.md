@@ -39,19 +39,19 @@ sudo apt install tmux
 
 To allow remote access to the Jetson Nano, we will set up a reverse ssh tunnel. This will allow us to connect to the Jetson Nano from anywhere in the world, as long as it has an internet connection.
 I set up a minimal vm on aws lightsail to act as the server. You can use any server you want, as long as it has a public IP address and you can ssh into it.
-By default the lightsail instance uses keys instead of passwords for ssh. If you are using a server that uses passwords, you will need to change the ssh command below to include the password.
+By default the lightsail instance uses keys instead of passwords for ssh. If you are using a server that uses passwords, you will need to change the ssh commands below to include the password.
 
-1. On the Nano, install autossh. autossh will automatically restart the ssh connection if it is interrupted.
+ On the Nano, install autossh. autossh will automatically restart the ssh connection if it is interrupted.
 ```
 sudo apt install autossh
 ```
-1. Since Im using keys, I need to copy the Server public key to the Nano so that it can authenticate the connection.
+Since Im using keys, I need to copy the Server public key to the Nano so that it can authenticate the connection.
    I named it sail.pem and copied it to the home directory on the Nano
    In order to use the key, I need to change the permissions on it
 ``` 
 chmod 400 sail.pem
 ```
-1. Now we can use autossh to set up the reverse tunnel
+ Now we can use autossh to set up the reverse tunnel
 ``` 
 autossh -f -N -R 10022:localhost:22 -i sail.pem <server user>@<server public ip>
 ```
@@ -64,7 +64,7 @@ autossh -f -N -R 10022:localhost:22 -i sail.pem <server user>@<server public ip>
    * -i tells autossh to use the key file
    * sail.pem is the key file
    
-1. Now that the tunnel is set up, we can ssh into the Nano from the server
+ Now that the tunnel is set up, we can ssh into the Nano from the server
 ```
 ssh -p 10022 jetson@localhost
 ```
@@ -73,3 +73,7 @@ ssh -p 10022 jetson@localhost
    * localhost is the address on the server that is forwarded to the Nano
 
 And thats it! Now you can ssh into the Nano from anywhere in the world, as long as it has an internet connection. The ssh command will need to be run from the server on every session.
+
+To kill the autossh process, run:
+```
+pkill autossh
