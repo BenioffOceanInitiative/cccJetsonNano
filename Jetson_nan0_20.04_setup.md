@@ -35,62 +35,41 @@ sudo apt install v4l2-utils
 sudo apt install tmux
 ``` 
 
-## Options for setting up secure ssh
-We want to secure the Jetson Nano as much as possible, since this will be running 24/7 and will be exposed to the internet
+# Setting up a Reverse SSH Tunnel
 
+To allow remote access to the Jetson Nano, we will set up a reverse ssh tunnel. This will allow us to connect to the Jetson Nano from anywhere in the world, as long as it has an internet connection.
+I set up a minimal vm on aws lightsail to act as the server. You can use any server you want, as long as it has a public IP address and you can ssh into it.
+By default the lightsail instance uses keys instead of passwords for ssh. If you are using a server that uses passwords, you will need to change the ssh command below to include the password.
 
-### 1. **Secure the SSH Server**:
-Before exposing the SSH server (Jetson Nano) to the Internet, take the following precautions:
-
-- **Change the default port**: (Not a foolproof measure, but can deter bots that scan default ports.)
-    Edit `/etc/ssh/sshd_config` and change `Port 22` to a port of your choice, e.g., `Port 2222`.
-
-- **Use SSH keys for authentication**:
-    - On your local computer (client side), generate an SSH key pair:
-        ```bash
-        ssh-keygen
-        ```
-    - Copy the public key to the remote computer:
-        ```bash
-        ssh-copy-id -i ~/.ssh/id_rsa.pub user@remote_host
-        ```
-    - After copying, edit `/etc/ssh/sshd_config` on the remote computer and disable password authentication:
-        ```
-        PasswordAuthentication no
-        ```
-
-- **Use a firewall**:
-    If you are using UFW (Uncomplicated Firewall), allow your custom SSH port:
-    ```bash
-    sudo ufw allow 2222/tcp
-    sudo ufw enable
-    ```
-
-- **Limit SSH access to specific IP addresses** (if possible):
-    With UFW, you can allow access to the SSH port only from a specific IP:
-    ```bash
-    sudo ufw allow from your.ip.address.here to any port 2222
-    ```
-
-- **Use `fail2ban`**:
-    This tool bans IP addresses that have too many failed login attempts:
-    ```bash
-    sudo apt install fail2ban
-    sudo systemctl enable fail2ban
-    sudo systemctl start fail2ban
-    ```
-
-### 2. **Port Forwarding**:
-To access your Linux machine from outside your local network, set up port forwarding on your router to forward your custom SSH port (e.g., 2222) to the Linux machine's internal IP address.
-
-### 3. **Dynamic DNS**:
-If your home network doesn't have a static IP, consider using a Dynamic DNS (DDNS) service like DuckDNS, No-IP, or DynDNS. This will provide a hostname that always points to your home's current IP address.
-
-### 4. **Connect**:
-Once everything is set up:
-
-```bash
-ssh -p 2222 user@remote_host_or_ddns
+1. On the Nano, install autossh. autossh will automatically restart the ssh connection if it is interrupted.
 ```
+sudo apt install autossh
+```
+1. Since Im using keys, I need to copy the Server public key to the Nano so that it can authenticate the connection.
+   I named it sail.pem and copied it to the home directory on the Nano
+   In order to use the key, I need to change the permissions on it
+``` 
+chmod 400 sail.pem
+```
+1. Now we can use autossh to set up the reverse tunnel
+``` 
+autossh -f -N -R 10022:localhost:22 -i sail.pem <server user>@<server public ip>
+```
+   * -f tells autossh to run in the background
+   * -N tells autossh not to run any commands on the server
+   * -R tells autossh to set up a reverse tunnel
+   * 10022 is the port on the server that will be forwarded to port 22 on the Nano
+   * localhost is the address on the server that will be forwarded to the Nano
+   * 22 is the port on the Nano that will be forwarded to the server
+   * -i tells autossh to use the key file
+   * sail.pem is the key file
+   
+1. Now that the tunnel is set up, we can ssh into the Nano from the server
+```
+ssh -p 10022 jetson@localhost
+```
+   * -p tells ssh to use port 10022
+   * jetson is the username on the Nano
+   * localhost is the address on the server that is forwarded to the Nano
 
-**Important**: Always be cautious when exposing any service to the public internet
+And thats it! Now you can ssh into the Nano from anywhere in the world, as long as it has an internet connection. The ssh command will need to be run from the server on every session.
