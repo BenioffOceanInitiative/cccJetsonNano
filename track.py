@@ -243,7 +243,7 @@ def detect(opt):
 
             else:
                 deepsort.increment_ages()
-                LOGGER.info('No detections')
+                #LOGGER.info('No detections')
 
             # Stream results
             im0 = annotator.result()
@@ -345,7 +345,7 @@ def get_top_id():
     global top_id
     global dir_data
     id = max(dir_data, key=dir_data.get)
-    if dir_data[id] < (h//2)-50:
+    if dir_data[id] < (h//2)-100:
         print("No object in the tracking area")
         return
     
