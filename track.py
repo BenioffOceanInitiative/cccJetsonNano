@@ -268,7 +268,7 @@ def count_obj(box,w,h,id,cls,class_dict):
     if cy>= int(h//2) or cy<= int(h//2)-300:
         return
             
-    if cy < (int(h/2)-20):
+    if cy < (int(h/2)-50):
 
         if id not in tracker:
             tracker.append(id)         
@@ -345,7 +345,7 @@ def get_top_id():
     global top_id
     global dir_data
     id = max(dir_data, key=dir_data.get)
-    if dir_data[id] < (h//2)-20:
+    if dir_data[id] < (h//2)-50:
         print("No object in the tracking area")
         return
     

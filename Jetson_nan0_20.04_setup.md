@@ -45,15 +45,16 @@ By default the lightsail instance uses keys instead of passwords for ssh. If you
 ```
 sudo apt install autossh
 ```
+I configured the VM with a static IP address also.
 Since Im using keys, I need to copy the Server public key to the Nano so that it can authenticate the connection.
    I named it sail.pem and copied it to the home directory on the Nano
    In order to use the key, I need to change the permissions on it
 ``` 
 chmod 400 sail.pem
 ```
- Now we can use autossh to set up the reverse tunnel
+ Now we can use autossh to set up the reverse tunnel in a tmux session named ssh
 ``` 
-autossh -f -N -R 10022:localhost:22 -i sail.pem <server user>@<server public ip>
+tmux new-session -s -d ssh "autossh -N -R 10022:localhost:22 -i sail.pem <server user>@<server public ip>"
 ```
    * -f tells autossh to run in the background
    * -N tells autossh not to run any commands on the server
