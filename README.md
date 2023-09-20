@@ -1,7 +1,6 @@
 # All The Nano Things
 after cloning cd into the repo and run the following commands:
 ```
-sudo apt install tmux
 chmod +x start.sh
 chmod +x stop.sh
 chmod +x install.sh
@@ -48,8 +47,8 @@ tmux list-sessions
 
 ```
 
-If using the gui on the jetson nano, you can test the webcam with mpv:
+If using the gui on the jetson nano, you can view the webcam with mpv:
 ``` 
 mpv /dev/video0
 ```
-To exit mpv press q
+To exit mpv press q 
