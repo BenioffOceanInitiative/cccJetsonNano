@@ -93,7 +93,7 @@ In the file add the following content:
 #!/bin/bash
 #!/bin/bash
 
-# Check if a tmux session named 'tracking' already exists
+# Check if a tmux session named 'ssh' already exists
 tmux has-session -t ssh 2>/dev/null
 
 # $? is a special variable that holds the exit status of the last command executed
