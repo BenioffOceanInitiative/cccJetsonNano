@@ -56,7 +56,6 @@ chmod 400 sail.pem
 ``` 
 tmux new-session -s -d ssh "autossh -N -R 10022:localhost:22 -i sail.pem <server user>@<server public ip>"
 ```
-   * -f tells autossh to run in the background
    * -N tells autossh not to run any commands on the server
    * -R tells autossh to set up a reverse tunnel
    * 10022 is the port on the server that will be forwarded to port 22 on the Nano
@@ -78,3 +77,79 @@ And thats it! Now you can ssh into the Nano from anywhere in the world, as long 
 To kill the autossh process, run:
 ```
 pkill autossh
+``````
+# Create a Service that runs the tunnel on startup with Systemd
+
+1. **Write The Bash Script**
+
+
+```bash
+touch /autossh.sh
+```
+
+In the file add the following content:
+
+```bash
+#!/bin/bash
+#!/bin/bash
+
+# Check if a tmux session named 'tracking' already exists
+tmux has-session -t ssh 2>/dev/null
+
+# $? is a special variable that holds the exit status of the last command executed
+if [ $? != 0 ]; then
+    # Start a new tmux session in the background without attaching to it
+    tmux new-session -d -s ssh "autossh -N -R 10022:localhost:22 -i sail.pem <server user>@<server public ip>"
+    
+else
+    echo "A tmux session named 'ssh' is already running"
+fi
+```
+
+Save and close the file.
+
+2. **Make the script executable**
+
+```bash
+chmod +x /autossh.sh
+```
+
+
+**Using systemd**
+
+Create a new service file under `/etc/systemd/system/`, let's name it `autossh.service`:
+
+```bash
+sudo nano /etc/systemd/system/autossh.service
+```
+
+b. Add the following content:
+
+```ini
+[Unit]
+Description= Reverse autossh tunnel
+
+[Service]
+ExecStart=/home/jetson/autossh.sh
+User=jetson
+Group=jetson
+
+[Install]
+WantedBy=multi-user.target
+```
+
+c. Save and close the file.
+
+d. Enable the service to run at startup:
+
+```bash
+sudo systemctl enable myscript.service
+```
+
+e. To test the service without rebooting, you can start it manually:
+
+```bash
+sudo systemctl start myscript.service
+```
+
+Now, the ssh tunnel will run on every system startup.
