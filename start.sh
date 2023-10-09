@@ -6,7 +6,7 @@ tmux has-session -t tracking 2>/dev/null
 # $? is a special variable that holds the exit status of the last command executed
 if [ $? != 0 ]; then
     # Start a new tmux session in the background without attaching to it
-    tmux new-session -d -s tracking "python3 track.py --weights exp7.pt --device 0 --source 0 --conf-thres .3"
+    tmux new-session -d -s tracking "python3 track.py --weights exp8.pt --device 0 --source 0 --conf-thres .3"
     echo "Started track.py in a tmux session named 'tracking'"
 else
     echo "A tmux session named 'tracking' is already running. Please stop it first."
