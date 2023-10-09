@@ -110,7 +110,7 @@ touch /autossh.sh
 In the file add the following content:
 
 ```bash
-#!/bin/bash
+
 #!/bin/bash
 
 # Check if a tmux session named 'ssh' already exists
