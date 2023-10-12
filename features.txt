@@ -1,0 +1,24 @@
+GUI would be great
+
+need to be able to load new weights easily
+
+ - potentially have it check a directory for new weights and load them in
+ - could also have it check for new weights every day or something
+ - maybe an auto update feature?
+
+need to be able to modify the upload URL for data uploads during tracking
+ - possibly a config file?
+
+
+need to be able to change tracking parameters such as the threshold for image upload and object counting
+
+need a way to change the camera settings
+ - exposure
+ - gain
+ - resolution
+ - framerate
+ - etc
+
+need a way to enbale or disable video display/recording
+
+need a way to enable gpio pins for triggering the tracking program
