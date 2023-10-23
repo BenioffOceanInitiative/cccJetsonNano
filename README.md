@@ -3,7 +3,6 @@ after cloning cd into the repo and run the following commands:
 ```
 chmod +x start.sh
 chmod +x stop.sh
-chmod +x install.sh
 chmod +x monitor.sh
 ```
 install dedpendencies:
