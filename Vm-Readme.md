@@ -123,13 +123,13 @@ pkill autossh
 # Finding running SSH tunnels
   Sometimes, you may encounter an error when trying to start a new tunnel, saying that the port is already in use or port forwardng failed on the specified port. This (usually) means that there is already an ssh tunnel running on that port. To find the process that is using the port, run:
 ```
-sudo lsof -i -n | egrep '\<ssh\>'
-```
-or alternatively
+pgrep -a ssh | grep -E '(-L|-R|-D)'
 
 ```
-sudo netstat -tulpn | grep ssh
-```
+This searches for any processes that are using ssh with the -L, -R, or -D flags. These flags are used for port forwarding.
+
+
+
 You may have to run this on the Nano and the server, depending on which one you are trying to start the tunnel on.
 
 You will be given a list of processes that are using ssh with their corresponding ID's and IP addresses. Find the one that is using the port you want to use, and kill it with:
@@ -162,7 +162,7 @@ Below is a step-by-step guide on creating a `systemd` service for `autossh`:
     [Service]
     User=your_username
     Environment="AUTOSSH_GATETIME=0"
-    ExecStart=/usr/bin/autossh -M 0 -N -q -L -i <path/to/keyfile> 10022:localhost:22 cloud_user@cloud_VM_IP
+    ExecStart=/usr/bin/autossh -N -R  10022:localhost:22 cloud_user@cloud_VM_IP -i <path/to/keyfile>
 
     [Install]
     WantedBy=multi-user.target
@@ -176,8 +176,8 @@ Below is a step-by-step guide on creating a `systemd` service for `autossh`:
     - The `[Install]` section provides instructions for when the service is enabled to start on boot.
     The ssh command flags are the same as before, except we are using the full path to the keyfile.
   # Starting multiple tunnels with the same service
-  If you want to start multiple tunnels with the same service, you can add multiple ExecStart lines to the service file. For example, if you want to start a tunnel to the Nano and a tunnel to a VNC server, you can add the following lines to the service file:
-  ```
+  If you want to start multiple tunnels with the same service, you can add multiple autossh commands to the ExecStart line (just make sure it's one line). For example, if you want to start an ssh tunnel to the Nano and a tunnel to a VNC server, you can edit the service file:
+  ```ini
   ExecStart=/usr/bin/autossh -M 0 -N -q -L -i <path/to/keyfile> 10022:localhost:22 cloud_user@cloud_VM_IP -L 15900:localhost:5900 cloud_user@cloud_VM_IP
   ```
 
@@ -312,6 +312,7 @@ Once started, it will run on startup and run in the background.
 
 
 # Accessing a VNC Server Behind NAT via a Cloud VM Bridge
+(AKA roll your own TeamViewer)
 
 If your VNC server is behind NAT, you can access it through a cloud-based VM that acts as a bridge. This document provides instructions on setting up this bridge connection using SSH tunnels.
 
