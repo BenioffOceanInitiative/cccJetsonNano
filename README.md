@@ -4,12 +4,15 @@ after cloning cd into the repo and run the following commands:
 chmod +x start.sh
 chmod +x stop.sh
 chmod +x install.sh
+chmod +x monitor.sh
 ```
-then run the install script:
+install dedpendencies:
 ```
-./install.sh
+pip install -r requirements.txt
+
 ```
-then run the start script:
+# Start tracking manually:
+
 ```
 ./start.sh
 ```
@@ -22,6 +25,12 @@ to change the weights, conf threshold or anything else edit the start.sh file
 the start script allows the program to run in the background, so that you can close your ssh session and have the program continue to run. To stop the program run the stop script:
 ```
 ./stop.sh
+```
+
+# Auto start tracking on pump signal:
+ make sure that the GPIO pin is correct in the GPIO_start.py file. By default it is set to 17 (Silkscreen pin number 11 next to GND).
+```
+./monitor.sh
 ```
 You should familiarize yourself with tmux if you are not already. It is a very useful tool for running programs in the background. [Here](https://www.hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/) is a good guide to get you started.
 
