@@ -17,7 +17,7 @@ def main():
     # Pin Setup:
     GPIO.setmode(GPIO.BCM)  # BCM pin-numbering scheme from Raspberry Pi
     GPIO.setup(input_pin, GPIO.IN)  # set pin as an input pin
-    print("Starting demo now! Press CTRL+C to exit")
+    print("Starting GPIO monitoring")
     try:
         while True:
             value = GPIO.input(input_pin)
@@ -26,6 +26,7 @@ def main():
                     status = 1
                     print("Starting tracking program")
                     sp.call("./start.sh")
+                    time.sleep(60) #wait for 60 seconds to allow the tracking program to start
                 else:
                     
                     if status == 0:
