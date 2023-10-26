@@ -377,7 +377,7 @@ def upload():
     for k,v in class_dict.items():
         data[baltimore_ai_class_dict[k]] = v
     #data['timestamp'] = timestamp
-    upload_data(device_id=2, image_file_path=f"{image_save_dir}/{filename}.jpg",data=json.dumps(data),timestamp=timestamp)
+    upload_data(device_id=3, image_file_path=f"{image_save_dir}/{filename}.jpg",data=json.dumps(data),timestamp=timestamp)
     print("Data saved")
     os.remove(f"{image_save_dir/filename}.jpg")
 

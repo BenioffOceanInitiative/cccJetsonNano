@@ -1,0 +1,2 @@
+Connected to 10023
+device id 3
