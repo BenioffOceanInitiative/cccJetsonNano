@@ -10,6 +10,12 @@ install dedpendencies:
 pip install -r requirements.txt
 
 ```
+
+# A note about the file permissions:
+    since we are using GIT as a version control system, sometimes the executable permissions are not preserved. If you are having trouble running the scripts, try running the chmod commands above. To persist these changes, you can run the following command for each script:
+    ```
+    git update-index --chmod=+x script.sh
+    ```
 # Start tracking manually:
 
 ```

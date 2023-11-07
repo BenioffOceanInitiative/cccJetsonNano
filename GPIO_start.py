@@ -42,7 +42,7 @@ def cooldown():
     global status
     """
     This is the cooldown period after the pump has been turned off, it waits for the set amount of time,then checks the pin state again,
-      before turning off the tracking program. this is to prevent the tracking program from turning off if the pump is turned on again quickly
+      before turning off the tracking program. this is like a debounce for the pump signal
     """
     time.sleep(10)
     value = GPIO.input(input_pin)

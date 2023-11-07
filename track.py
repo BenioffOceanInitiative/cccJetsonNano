@@ -220,7 +220,36 @@ def detect(opt):
                     if save_data:
                             upload()
                             save_data = False
-                            
+                    # print(f"Outputs: {outputs}")
+                    for j, (output, conf) in enumerate(zip(outputs, confs)):
+                        bboxes = output[0:4]
+                        id = output[4]
+                        cls = output[5]
+                        # print(f"Img: {im0.shape}\n")
+                        moving =  motion(id,bboxes[1])
+
+                        if moving:
+                            count_obj(bboxes,w,h,id,int(cls),class_dict)
+                        # print(im0.shape)
+                        c = int(cls)  # integer class
+                        label = f'{id} {names[c]} {conf:.2f}'
+                        annotator.box_label(bboxes, label, color=colors(c, True))
+                          
+                           # Save results (image with detections)
+                if save_vid:
+                    if vid_path != save_path:  # new video
+                        vid_path = save_path
+                        if isinstance(vid_writer, cv2.VideoWriter):
+                            vid_writer.release()  # release previous video writer
+                        if vid_cap:  # video
+                            fps = vid_cap.get(cv2.CAP_PROP_FPS)
+                            w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                            h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                        else:  # stream
+                            fps, w, h = 30, im0.shape[1], im0.shape[0]
+                        vid_writer = cv2.VideoWriter("output.mp4", cv2.VideoWriter_fourcc(*'MJPG'), fps, (w,h))
+                    vid_writer.write(im0)
+
                             
                     for j, (output, conf) in enumerate(zip(outputs, confs)):
                         bboxes = output[0:4]
