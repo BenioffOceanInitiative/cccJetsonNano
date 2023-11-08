@@ -38,24 +38,14 @@ if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))  # add ROOT to PATH
 ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
-baltimore_ai_class_dict={ 
-            0:"plastic_bag",
-            1:"plastic_bottle",
-            2:"plastic_cap",
-            3:'plastic_container',
-            4:"plastic_wrapper",
-            5:"plastic_other",
-            6:"foam_container",
-            7:"Foam_other",
-            8:"glass_bottle",
-            9:"paper_container",
-            10:"paper_other",
-            11:"Metal_cap",
-            12:"Metal_can",
-            13:"ppe",
-            14:"misc"
-            }
-
+baltimore_ai_class_dict={
+    "0": "plastic_wrapper",
+    "1": "plastic_bottle",
+    "2": "plastic_bag",
+    "3": "plastic_container",
+    "4": "foam_other",
+    "5": "foam_container"
+}
 class_dict = {}
 dir_data = {}
 top_id = []
