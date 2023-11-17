@@ -39,12 +39,12 @@ if str(ROOT) not in sys.path:
 ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
 baltimore_ai_class_dict={
-    "0": "plastic_wrapper",
-    "1": "plastic_bottle",
-    "2": "plastic_bag",
-    "3": "plastic_container",
-    "4": "foam_other",
-    "5": "foam_container"
+    0: "plastic_wrapper",
+    1: "plastic_bottle",
+    2: "plastic_bag",
+    3: "plastic_container",
+    4: "foam_other",
+    5: "foam_container"
 }
 class_dict = {}
 dir_data = {}
