@@ -38,6 +38,12 @@ if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))  # add ROOT to PATH
 ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 
+with open('config.json','r') as f:
+    config = json.load(f)
+    print(config)
+    device_id = config['device_id']
+    weights = config['weights']
+
 baltimore_ai_class_dict={
     0: "plastic_wrapper",
     1: "plastic_bottle",
@@ -98,7 +104,7 @@ def detect(opt):
 
     # Load model
     device = select_device(device)
-    model = DetectMultiBackend(yolo_model, device=device, dnn=opt.dnn)
+    model = DetectMultiBackend(weights, device=device, dnn=opt.dnn)
     stride, names, pt, jit, _ = model.stride, model.names, model.pt, model.jit, model.onnx
     imgsz = check_img_size(imgsz, s=stride)  # check image size
 
@@ -396,7 +402,7 @@ def upload():
     for k,v in class_dict.items():
         data[baltimore_ai_class_dict[k]] = v
     #data['timestamp'] = timestamp
-    upload_data(device_id=3, image_file_path=f"{image_save_dir}/{filename}.jpg",data=json.dumps(data),timestamp=timestamp)
+    upload_data(device_id=device_id, image_file_path=f"{image_save_dir}/{filename}.jpg",data=json.dumps(data),timestamp=timestamp)
     print("Data saved")
     os.remove(f"{image_save_dir/filename}.jpg")
 

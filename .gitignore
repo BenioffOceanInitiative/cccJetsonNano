@@ -172,3 +172,4 @@ output/
 pycache/
 *.mp4
 *.avi
+config.json
