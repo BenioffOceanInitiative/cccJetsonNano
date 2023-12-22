@@ -41,7 +41,7 @@ ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
 with open('config.json','r') as f:
     config = json.load(f)
     print(config)
-    device_id = config['device_id']
+    trashwheel_id = config['trashwheel_id']
     weights = config['weights']
 
 baltimore_ai_class_dict={
@@ -402,7 +402,7 @@ def upload():
     for k,v in class_dict.items():
         data[baltimore_ai_class_dict[k]] = v
     #data['timestamp'] = timestamp
-    upload_data(device_id=device_id, image_file_path=f"{image_save_dir}/{filename}.jpg",data=json.dumps(data),timestamp=timestamp)
+    upload_data(trashwheel_id=trashwheel_id, image_file_path=f"{image_save_dir}/{filename}.jpg",data=json.dumps(data),timestamp=timestamp)
     print("Data saved")
     os.remove(f"{image_save_dir/filename}.jpg")
 

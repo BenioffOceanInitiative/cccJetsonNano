@@ -7,9 +7,9 @@ from datetime import datetime
 url = "https://us-central1-cleancurrentscoalition.cloudfunctions.net/upload-images"
 
 
-def upload_data(device_id, image_file_path, data, timestamp):
+def upload_data(trashwheel_id, image_file_path, data, timestamp):
     files = {
-        "device_id": (None, str(device_id)),
+        "trashwheel_id": (None, str(trashwheel_id)),
         "contents_data": (None, data),
         "image_file": open(image_file_path, "rb"),
         "timestamp": (None, datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S').isoformat())
@@ -24,7 +24,7 @@ def upload_data(device_id, image_file_path, data, timestamp):
         print(response.text)
 
 parser = argparse.ArgumentParser(description='Upload trash wheel image, bounding box data, and trash collected data to the server')
-parser.add_argument('--device_id', type=int, help='unique id of device')
+parser.add_argument('--trashwheel_id', type=int, help='unique id of trashwheel')
 parser.add_argument('--image_file_path', type=str, help='directory path to image of trash on the trashwheel')
 parser.add_argument('--data', type=str, default='{}', help='collected trash data')
 parser.add_argument('--timestamp', type=str, help='timestamp of image capture')
@@ -36,4 +36,4 @@ if __name__ == '__main__':
     else:
         json_data = json.dumps(json.loads(args.data))
         print(datetime.strptime(args.timestamp, '%Y-%m-%d %H:%M:%S').isoformat())
-        upload_data(device_id=args.device_id, image_file_path=args.image_file_path, data=json_data, timestamp=args.timestamp)
+        upload_data(trashwheel_id=args.trashwheel_id, image_file_path=args.image_file_path, data=json_data, timestamp=args.timestamp)

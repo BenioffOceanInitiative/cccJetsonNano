@@ -11,10 +11,10 @@ pip install -r requirements.txt
 
 ```
 
-in the root directory create a file called config.json and input the following with your device id and the path to the weights file:
+in the root directory create a file called config.json and input the following with your trashwheel id and the path to the weights file:
 ```json
 {
-    "device_id": integer device id,
+    "trashwheel_id": integer trashwheel id,
     "weights": "path to weights file",
 }
 ```
